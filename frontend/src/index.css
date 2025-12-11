@@ -1,0 +1,74 @@
+@import "tailwindcss";
+body {
+  background-color: #ffe3ee;
+}
+.hero-parallax {
+  position: sticky; /* ou fixed si tu veux qu’elle reste toujours visible */
+  top: 60px;        /* correspond à la hauteur de ton navbar */
+  width: auto;      /* largeur originale de l'image */
+  max-width: 100%;  /* ne dépasse pas le conteneur */
+  height: auto;     /* conserve la hauteur originale */
+  object-fit: none; /* ne crop pas l'image */
+  z-index: -1;      /* pour que le texte reste au-dessus */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE et Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* index.css */
+
+/* Animation : slide de droite vers la gauche */
+@keyframes slide-right {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Classe pour appliquer l'animation */
+.animate-slide-right {
+  animation: slide-right 1s ease-out forwards;
+}
+
+/* Slide vers la gauche */
+@keyframes slide-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Classe à appliquer sur l'élément */
+.animate-slide-left {
+  animation: slide-left 1s ease-out forwards;
+}
+
+
+/* Animation : texte qui monte et devient visible */
+@keyframes fade-up {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* Classe Tailwind personnalisée pour appliquer l'animation */
+.animate-fade-up {
+  animation: fade-up 2s ease-out forwards;
+}
