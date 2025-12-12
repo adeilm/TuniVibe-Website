@@ -7,16 +7,18 @@ const authService = {
   // ----------------------------------------------------
   login: async (email, motDePasse) => {
     try {
-      const res = await fetch(BASE_URL);
-      if (!res.ok) throw new Error("Impossible de récupérer les utilisateurs");
+      const res = await fetch(`${BASE_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: motDePasse }),
+      });
 
-      const users = await res.json();
-      const user = users.find(
-        (u) => u.email === email && u.motDePasse === motDePasse
-      );
+      if (!res.ok) {
+        // Si 401 ou 500, on considère que c'est un échec
+        throw new Error("Email ou mot de passe invalide");
+      }
 
-      if (!user) throw new Error("Email ou mot de passe invalide");
-
+      const user = await res.json();
       return user;
     } catch (error) {
       console.error("Erreur dans authService.login :", error);

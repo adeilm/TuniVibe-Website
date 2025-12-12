@@ -89,7 +89,7 @@ const EventDetail = () => {
           </p>
 
           <p className="flex justify-between pt-1 text-lg font-bold text-gray-900">
-            <span>Prix :</span> 
+            <span>Prix unitaire :</span> 
             <span>{event.prixTicket} DT</span>
           </p>
         </div>
@@ -146,6 +146,13 @@ const EventDetail = () => {
                   +
                 </button>
               </div>
+            </div>
+
+            {/* Affichage du Total */}
+            <div className="mb-6 text-center">
+              <p className="text-xl text-gray-700">
+                Total : <span className="font-bold text-3xl text-pink-600">{(event.prixTicket * ticketCount).toFixed(2)} DT</span>
+              </p>
             </div>
 
             {/* Bouton Réserver */}

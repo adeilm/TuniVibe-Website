@@ -1,13 +1,5 @@
 package com.example.tunivibe.controller;
 
-import com.example.tunivibe.model.Event;
-import com.example.tunivibe.model.StatusEvent;
-import com.example.tunivibe.model.Utilisateur;
-import com.example.tunivibe.repository.EventRepository;
-import com.example.tunivibe.repository.UtilisateurRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -18,6 +10,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.tunivibe.model.Event;
+import com.example.tunivibe.model.StatusEvent;
+import com.example.tunivibe.model.Utilisateur;
+import com.example.tunivibe.repository.EventRepository;
+import com.example.tunivibe.repository.UtilisateurRepository;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -30,6 +41,30 @@ public class EventController {
     @Autowired
     private UtilisateurRepository userRepository;
     
+    // -----------------------
+    // SEARCH & REVIEWS (NoSQL Features)
+    // -----------------------
+    
+    @GetMapping("/search")
+    public List<Event> searchEvents(@RequestParam String query) {
+        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching(query);
+        return eventRepository.findAllBy(criteria);
+    }
+
+    @PostMapping("/{id}/reviews")
+    public Event addReview(@PathVariable String id, @RequestBody Event.Review review) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        
+        if (event.getReviews() == null) {
+            event.setReviews(List.of(review));
+        } else {
+            event.getReviews().add(review);
+        }
+        
+        return eventRepository.save(event);
+    }
+
  // Méthode utilitaire pour mettre à jour les événements terminés
     private void updatePastEvents() {
         List<Event> events = eventRepository.findAll();

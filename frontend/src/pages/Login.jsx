@@ -13,32 +13,24 @@ const Login = () => {
     setError(null); // Réinitialise les erreurs à chaque tentative
 
     try {
-      const allUsers = await authService.getAllUsers();
+      // Appel au service qui contacte maintenant le backend
+      const user = await authService.login(email, password);
 
-      // Vérifier si email existe
-      const userByEmail = allUsers.find((u) => u.email === email);
-
-      if (!userByEmail) {
+      if (!user) {
         setError(
           <>
-            Aucun compte trouvé avec cet email.<br />
-            Veuillez vérifier vos données ou créer un compte.
+            Email ou mot de passe incorrect.<br />
+            Veuillez vérifier vos identifiants.
           </>
         );
         return;
       }
 
-      // Vérifier si mot de passe correspond
-      if (userByEmail.motDePasse !== password) {
-        setError("Mot de passe incorrect. Veuillez réessayer.");
-        return;
-      }
-
       // Si tout est correct → connexion + stockage user
-      localStorage.setItem("user", JSON.stringify(userByEmail));
+      localStorage.setItem("user", JSON.stringify(user));
 
        // 4️⃣ Redirection selon le rôle
-      const role = userByEmail.role?.toUpperCase();
+      const role = user.role?.toUpperCase();
 
       if (role === "ADMIN") {
         navigate("/admin/dashboard");

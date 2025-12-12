@@ -46,6 +46,38 @@ const eventService = {
   },
 
   // ----------------------------------------------------
+  // Recherche (Full Text Search)
+  // ----------------------------------------------------
+  searchEvents: async (query) => {
+    try {
+      const res = await fetch(`${BASE_URL}/search?query=${query}`);
+      if (!res.ok) throw new Error("Erreur lors de la recherche");
+      return await res.json();
+    } catch (error) {
+      console.error("Erreur dans eventService.searchEvents :", error);
+      return [];
+    }
+  },
+
+  // ----------------------------------------------------
+  // Ajouter un avis (Review)
+  // ----------------------------------------------------
+  addReview: async (eventId, reviewData) => {
+    try {
+      const res = await fetch(`${BASE_URL}/${eventId}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reviewData),
+      });
+      if (!res.ok) throw new Error("Erreur lors de l'ajout de l'avis");
+      return await res.json();
+    } catch (error) {
+      console.error("Erreur dans eventService.addReview :", error);
+      return null;
+    }
+  },
+
+  // ----------------------------------------------------
   // Créer un événement
   // ----------------------------------------------------
   createEvent: async (event) => {

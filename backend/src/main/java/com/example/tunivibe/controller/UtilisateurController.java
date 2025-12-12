@@ -1,18 +1,26 @@
 package com.example.tunivibe.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.tunivibe.model.Event;
+import com.example.tunivibe.model.Role;
 import com.example.tunivibe.model.StatusEvent;
 import com.example.tunivibe.model.StatusUtilisateur;
 import com.example.tunivibe.model.Utilisateur;
-import com.example.tunivibe.model.Role;
 import com.example.tunivibe.repository.EventRepository;
 import com.example.tunivibe.repository.UtilisateurRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -25,12 +33,35 @@ public class UtilisateurController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    // ========================
+    // AUTHENTICATION
+    // ========================
+    @PostMapping("/login")
+    public Utilisateur login(@RequestBody java.util.Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        Utilisateur user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email ou mot de passe incorrect"));
+
+        if (!passwordEncoder.matches(password, user.getMotDePasse())) {
+            throw new RuntimeException("Email ou mot de passe incorrect");
+        }
+        return user;
+    }
+
     // ========================
     // CRUD Utilisateurs
     // ========================
     @PostMapping
     public Utilisateur create(@RequestBody Utilisateur u) {
         validateOrganisateurEmail(u);
+
+        // Hash password
+        u.setMotDePasse(passwordEncoder.encode(u.getMotDePasse()));
 
         // Si Organisateur, status par défaut = EN_ATTENTE
         if (Role.ORGANISATEUR.equals(u.getRole()) && u.getStatus() == null) {
