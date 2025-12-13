@@ -98,13 +98,6 @@ const CreateEvent = () => {
     }
   };
 
-    } catch (err) {
-      setLoading(false);
-      console.error(err);
-      setError(err.response?.data?.message || err.message || "Erreur lors de la création de l'événement");
-    }
-  };
-
   return (
     <div className="max-w-3xl mx-auto mt-10">
       {successMessage ? (
