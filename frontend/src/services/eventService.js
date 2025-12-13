@@ -1,5 +1,5 @@
 // src/services/eventService.js
-const BASE_URL = "http://localhost:8080/api/events";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/events`;
 
 const eventService = {
   // ----------------------------------------------------
@@ -87,11 +87,16 @@ const eventService = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
       });
-      if (!res.ok) throw new Error("Erreur lors de la création de l'événement");
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Erreur lors de la création de l'événement");
+      }
+      
       return await res.json();
     } catch (error) {
       console.error("Erreur dans eventService.createEvent :", error);
-      return null;
+      throw error; // Re-throw to be handled by the component
     }
   },
 

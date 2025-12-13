@@ -45,6 +45,64 @@ public class Event {
     // Embedded Reviews (NoSQL Pattern: Embedding related data)
     private List<Review> reviews = new ArrayList<>();
 
+    // Getters and Setters
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getImageBase64() { return imageBase64; }
+    public void setImageBase64(String imageBase64) { this.imageBase64 = imageBase64; }
+
+    public String getTitre() { return titre; }
+    public void setTitre(String titre) { this.titre = titre; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+
+    public LocalTime getStartTime() { return startTime; }
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+
+    public LocalTime getEndTime() { return endTime; }
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+
+    public String getVille() { return ville; }
+    public void setVille(String ville) { this.ville = ville; }
+
+    public String getAdresse() { return adresse; }
+    public void setAdresse(String adresse) { this.adresse = adresse; }
+
+    public CategorieEvent getCategorie() { return categorie; }
+    public void setCategorie(CategorieEvent categorie) { this.categorie = categorie; }
+
+    public int getCapaciteMax() { return capaciteMax; }
+    // Custom setter to maintain original logic
+    public void setCapaciteMax(int capaciteMax) { 
+        this.capaciteMax = capaciteMax; 
+        this.nbTicketsRestants = capaciteMax; // initialisation automatique
+    }
+
+    public int getNbTicketsRestants() { return nbTicketsRestants; }
+    public void setNbTicketsRestants(int nbTicketsRestants) { this.nbTicketsRestants = nbTicketsRestants; }
+
+    public double getPrixTicket() { return prixTicket; }
+    public void setPrixTicket(double prixTicket) { this.prixTicket = prixTicket; }
+
+    public StatusEvent getStatus() { return status; }
+    public void setStatus(StatusEvent status) { this.status = status; }
+
+    public String getOrganisateurId() { return organisateurId; }
+    public void setOrganisateurId(String organisateurId) { this.organisateurId = organisateurId; }
+
+    public Organisateur getOrganisateur() { return organisateur; }
+    public void setOrganisateur(Organisateur organisateur) { this.organisateur = organisateur; }
+
+    public List<Review> getReviews() { return reviews; }
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
+
+
     // Classe interne pour l'organisateur
     public static class Organisateur {
         private String userId;
@@ -84,68 +142,17 @@ public class Event {
 
         public String getUserId() { return userId; }
         public void setUserId(String userId) { this.userId = userId; }
+
         public String getUserName() { return userName; }
         public void setUserName(String userName) { this.userName = userName; }
+
         public int getRating() { return rating; }
         public void setRating(int rating) { this.rating = rating; }
+
         public String getComment() { return comment; }
         public void setComment(String comment) { this.comment = comment; }
+
         public LocalDate getDate() { return date; }
         public void setDate(LocalDate date) { this.date = date; }
     }
-
-    // --- Getters & Setters ---
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public String getImageBase64() { return imageBase64; }
-    public void setImageBase64(String imageBase64) { this.imageBase64 = imageBase64; }
-
-    public String getTitre() { return titre; }
-    public void setTitre(String titre) { this.titre = titre; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
-
-    public LocalTime getStartTime() { return startTime; }
-    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
-
-    public LocalTime getEndTime() { return endTime; }
-    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
-
-    public String getVille() { return ville; }
-    public void setVille(String ville) { this.ville = ville; }
-
-    public String getAdresse() { return adresse; }
-    public void setAdresse(String adresse) { this.adresse = adresse; }
-
-    public CategorieEvent getCategorie() { return categorie; }
-    public void setCategorie(CategorieEvent categorie) { this.categorie = categorie; }
-
-    public int getCapaciteMax() { return capaciteMax; }
-    public void setCapaciteMax(int capaciteMax) { 
-        this.capaciteMax = capaciteMax; 
-        this.nbTicketsRestants = capaciteMax; // initialisation automatique
-    }
-
-    public int getNbTicketsRestants() { return nbTicketsRestants; }
-    public void setNbTicketsRestants(int nbTicketsRestants) { this.nbTicketsRestants = nbTicketsRestants; }
-
-    public double getPrixTicket() { return prixTicket; }
-    public void setPrixTicket(double prixTicket) { this.prixTicket = prixTicket; }
-
-    public StatusEvent getStatus() { return status; }
-    public void setStatus(StatusEvent status) { this.status = status; }
-
-    public String getOrganisateurId() { return organisateurId; }
-    public void setOrganisateurId(String organisateurId) { this.organisateurId = organisateurId; }
-    
-    public Organisateur getOrganisateur() { return organisateur; }
-    public void setOrganisateur(Organisateur organisateur) { this.organisateur = organisateur; }
-
-    public List<Review> getReviews() { return reviews; }
-    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 }

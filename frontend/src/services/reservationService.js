@@ -1,5 +1,5 @@
 // src/services/reservationService.js
-const BASE_URL = "http://localhost:8080/api/reservations";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/reservations`;
 
 const reservationService = {
   // Créer une réservation

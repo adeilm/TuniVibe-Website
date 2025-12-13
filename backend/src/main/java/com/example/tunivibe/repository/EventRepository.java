@@ -23,4 +23,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findCitiesByCategorie(String categorie);
 
 	List<Event> findByStatus(StatusEvent enAttente);
+
+    // Find events that are NOT 'TERMINE' and have a date before the given date
+    List<Event> findByStatusNotAndDateBefore(StatusEvent status, java.time.LocalDate date);
 }

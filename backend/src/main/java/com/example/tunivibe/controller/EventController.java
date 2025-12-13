@@ -67,14 +67,13 @@ public class EventController {
 
  // Méthode utilitaire pour mettre à jour les événements terminés
     private void updatePastEvents() {
-        List<Event> events = eventRepository.findAll();
         LocalDate today = LocalDate.now();
+        // Only fetch events that are NOT 'TERMINE' and are in the past
+        List<Event> eventsToUpdate = eventRepository.findByStatusNotAndDateBefore(StatusEvent.TERMINE, today);
 
-        for (Event event : events) {
-            if (event.getStatus() != StatusEvent.TERMINE && event.getDate().isBefore(today)) {
-                event.setStatus(StatusEvent.TERMINE);
-                eventRepository.save(event);
-            }
+        for (Event event : eventsToUpdate) {
+            event.setStatus(StatusEvent.TERMINE);
+            eventRepository.save(event);
         }
     }
 

@@ -70,13 +70,8 @@ const CreateEvent = () => {
       };
 
       setLoading(true);
-      const result = await eventService.createEvent(eventData);
+      await eventService.createEvent(eventData);
       setLoading(false);
-
-      if (!result) {
-        setError("Erreur lors de l'enregistrement de l'événement");
-        return;
-      }
 
       setSuccessMessage(
         "✅ Votre demande de création d'événement a bien été reçue. " +
@@ -97,6 +92,11 @@ const CreateEvent = () => {
         endTime: "",
         imageBase64: ""
       });
+    } catch (err) {
+      setLoading(false);
+      setError(err.message || "Une erreur est survenue.");
+    }
+  };
 
     } catch (err) {
       setLoading(false);
